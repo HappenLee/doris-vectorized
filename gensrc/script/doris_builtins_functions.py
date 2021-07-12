@@ -1064,7 +1064,7 @@ visible_functions = [
         '', ''],
 
     [['ST_Contains'], 'BOOLEAN', ['VARCHAR', 'VARCHAR'],
-        '_ZN5doris12GeoFunctions11st_cdate_formatontainsEPN9doris_udf15FunctionContextERKNS1_9StringValES6_',
+        '_ZN5doris12GeoFunctions11st_containsEPN9doris_udf15FunctionContextERKNS1_9StringValES6_',
         '_ZN5doris12GeoFunctions19st_contains_prepareEPN9doris_udf15FunctionContextENS2_18FunctionStateScopeE',
         '_ZN5doris12GeoFunctions17st_contains_closeEPN9doris_udf15FunctionContextENS2_18FunctionStateScopeE',
         '', 'ALWAYS_NULLABLE'],
