@@ -149,8 +149,7 @@ OLAPStatus Tablet::revise_tablet_meta(const std::vector<RowsetMetaSharedPtr>& ro
     OLAPStatus res = OLAP_SUCCESS;
     do {
         // load new local tablet_meta to operate on
-        TabletMetaSharedPtr new_tablet_meta(new (nothrow) TabletMeta());
-        generate_tablet_meta_copy_unlocked(new_tablet_meta);
+        TabletMetaSharedPtr new_tablet_meta(new (nothrow) TabletMeta(*_tablet_meta));
 
         // delete versions from new local tablet_meta
         for (const Version& version : versions_to_delete) {
