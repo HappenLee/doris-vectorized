@@ -49,7 +49,7 @@ class RowCursor;
 class RowBlock;
 class RuntimeState;
 
-class TupleReader : public Reader {
+class TupleReader final : public Reader {
 public:
     TupleReader();
     ~TupleReader() override = default;
@@ -62,6 +62,10 @@ public:
         return (this->*_next_row_func)(row_cursor, mem_pool, agg_pool, eof);
     }
 
+    OLAPStatus next_block_with_aggregation(vectorized::Block* block, MemPool* mem_pool,
+                                         ObjectPool* agg_pool, bool* eof) override {
+        return OLAP_ERR_READER_INITIALIZE_ERROR;
+    }
 private:
     friend class CollectIterator;
     friend class DeleteHandler;

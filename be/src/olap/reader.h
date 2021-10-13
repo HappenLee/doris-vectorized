@@ -103,11 +103,15 @@ public:
     // Initialize Reader with tablet, data version and fetch range.
     virtual OLAPStatus init(const ReaderParams& read_params);
 
-    // Reader next row with aggregation.
+    // Read next row with aggregation.
     // Return OLAP_SUCCESS and set `*eof` to false when next row is read into `row_cursor`.
     // Return OLAP_SUCCESS and set `*eof` to true when no more rows can be read.
     // Return others when unexpected error happens.
     virtual OLAPStatus next_row_with_aggregation(RowCursor* row_cursor, MemPool* mem_pool,
+                                         ObjectPool* agg_pool, bool* eof) = 0;
+
+    // Read next block with aggregation.
+    virtual OLAPStatus next_block_with_aggregation(vectorized::Block* block, MemPool* mem_pool,
                                          ObjectPool* agg_pool, bool* eof) = 0;
 
     uint64_t merged_rows() const { return _merged_rows; }

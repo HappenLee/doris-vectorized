@@ -103,15 +103,11 @@ OLAPStatus BlockReader::init(const ReaderParams& read_params) {
 
 OLAPStatus BlockReader::_direct_next_block(Block* block, MemPool* mem_pool, ObjectPool* agg_pool,
                                     bool* eof) {
-//    if (UNLIKELY(_next_key == nullptr)) {
-//        *eof = true;
-//        return OLAP_SUCCESS;
-//    }
-//    direct_copy_row(row_cursor, *_next_key);
-//    auto res = _collect_iter->next(&_next_key, &_next_delete_flag);
-//    if (UNLIKELY(res != OLAP_SUCCESS && res != OLAP_ERR_DATA_EOF)) {
-//        return res;
-//    }
+    auto res = _collect_iter->next(block);
+    if (UNLIKELY(res != OLAP_SUCCESS && res != OLAP_ERR_DATA_EOF)) {
+        return res;
+    }
+    *eof = res == OLAP_ERR_DATA_EOF;
     return OLAP_SUCCESS;
 }
 

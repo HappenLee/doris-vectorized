@@ -50,7 +50,7 @@ class RowBlock;
 class RuntimeState;
 
 namespace vectorized {
-class BlockReader : public Reader {
+class BlockReader final : public Reader {
 public:
     BlockReader();
     ~BlockReader() = default;
@@ -61,6 +61,11 @@ public:
     OLAPStatus next_row_with_aggregation(RowCursor* row_cursor, MemPool* mem_pool,
                                          ObjectPool* agg_pool, bool* eof) override {
         return OLAP_ERR_READER_INITIALIZE_ERROR;
+    }
+
+    OLAPStatus next_block_with_aggregation(Block* block, MemPool* mem_pool,
+                                         ObjectPool* agg_pool, bool* eof) override {
+        return (this->*_next_block_func)(block, mem_pool, agg_pool, eof);
     }
 
 private:
