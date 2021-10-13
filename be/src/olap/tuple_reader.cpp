@@ -20,28 +20,18 @@
 #include <parallel_hashmap/phmap.h>
 
 #include <boost/algorithm/string/case_conv.hpp>
-#include <charconv>
 #include <unordered_set>
 
-#include "olap/bloom_filter_predicate.h"
 #include "olap/collect_iterator.h"
-#include "vec/olap/vcollect_iterator.h"
-#include "olap/comparison_predicate.h"
-#include "olap/in_list_predicate.h"
-#include "olap/null_predicate.h"
 #include "olap/row.h"
 #include "olap/row_block.h"
 #include "olap/row_cursor.h"
 #include "olap/rowset/beta_rowset_reader.h"
-#include "olap/rowset/column_data.h"
 #include "olap/schema.h"
 #include "olap/storage_engine.h"
-#include "olap/tablet.h"
 #include "runtime/mem_pool.h"
 #include "runtime/mem_tracker.h"
-#include "runtime/string_value.hpp"
 #include "util/date_func.h"
-#include "util/mem_util.hpp"
 
 using std::nothrow;
 using std::set;

@@ -52,7 +52,7 @@ class RuntimeState;
 class TupleReader : public Reader {
 public:
     TupleReader();
-    ~TupleReader() = default;
+    ~TupleReader() override = default;
 
     // Initialize TupleReader with tablet, data version and fetch range.
     OLAPStatus init(const ReaderParams& read_params) override;
@@ -64,7 +64,6 @@ public:
 
 private:
     friend class CollectIterator;
-    friend class vectorized::VCollectIterator;
     friend class DeleteHandler;
 
     // Direcly read row from rowset and pass to upper caller. No need to do aggregation.
