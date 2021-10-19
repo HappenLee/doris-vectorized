@@ -2165,6 +2165,7 @@ public class SingleNodePlanner {
                     slot = analyzer.getDescTbl().addSlotDescriptor(tblRef.getDesc());
                     slot.setColumn(minimuColumn);
                     slot.setIsMaterialized(true);
+                    slot.setIsNullable(minimuColumn.isAllowNull());
                 }
             }
         }
