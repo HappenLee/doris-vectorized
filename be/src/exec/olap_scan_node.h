@@ -260,7 +260,7 @@ protected:
 
     std::mutex _scan_batches_lock;
     std::condition_variable _scan_batch_added_cv;
-    int64_t _running_thread = 0;
+    std::atomic_int16_t _running_thread = 0;
     std::condition_variable _scan_thread_exit_cv;
 
     std::list<RowBatchInterface*> _scan_row_batches;
