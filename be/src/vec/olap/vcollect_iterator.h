@@ -48,6 +48,8 @@ public:
 
     OLAPStatus next(Block* block);
 
+    bool is_merge() const { return _merge; };
+
 private:
     // This interface is the actual implementation of the new version of iterator.
     // It currently contains two implementations, one is Level0Iterator,

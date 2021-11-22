@@ -50,7 +50,9 @@ void VCollectIterator::build_heap(const std::vector<RowsetReaderSharedPtr>& rs_r
         return;
     } else if (_merge) {
         DCHECK(!rs_readers.empty());
-        for (auto& child : _children) { child->init(); }
+        for (auto iter = _children.begin(); iter != _children.end(); ++iter) {
+            if ((*iter)->init() != OLAP_SUCCESS) iter = _children.erase(iter);
+        }
         // build merge heap with two children, a base rowset as level0iterator and
         // other cumulative rowsets as a level1iterator
         if (_children.size() > 1) {
@@ -154,6 +156,7 @@ OLAPStatus VCollectIterator::next(Block* block) {
 VCollectIterator::Level0Iterator::Level0Iterator(RowsetReaderSharedPtr rs_reader, Reader* reader)
         : _rs_reader(rs_reader), _reader(reader), _current_row(0) {
     DCHECK_EQ(RowsetReader::BETA, rs_reader->type());
+    _block = _reader->tablet()->tablet_schema().create_block(_reader->_return_columns);
 }
 
 OLAPStatus VCollectIterator::Level0Iterator::init() {
@@ -175,6 +178,7 @@ OLAPStatus VCollectIterator::Level0Iterator::_refresh_current_row() {
         if (_block.rows() != 0 && _current_row < _block.rows()) {
             return OLAP_SUCCESS;
         } else {
+            _block.clear_column_data();
             auto res = _rs_reader->next_block(&_block);
             if (res != OLAP_SUCCESS) {
                 _current_row = 0;
@@ -182,7 +186,6 @@ OLAPStatus VCollectIterator::Level0Iterator::_refresh_current_row() {
             }
         }
     } while (_block.rows() != 0);
-    _current_row = 0;
     return OLAP_ERR_DATA_EOF;
 }
 
@@ -230,7 +233,6 @@ OLAPStatus VCollectIterator::Level1Iterator::next(const Block** block, uint32_t*
     if (_merge) {
         return _merge_next(block, row);
     } else {
-        DCHECK(false) << "should not use this method.";
         return _normal_next(block, row);
     }
 }

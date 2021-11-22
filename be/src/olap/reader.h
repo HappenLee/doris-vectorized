@@ -77,6 +77,7 @@ struct ReaderParams {
     // The ColumnData will be set when using Merger, eg Cumulative, BE.
     std::vector<RowsetReaderSharedPtr> rs_readers;
     std::vector<uint32_t> return_columns;
+    std::vector<uint32_t>* origin_return_columns = nullptr;
     RuntimeProfile* profile = nullptr;
     RuntimeState* runtime_state = nullptr;
 
@@ -203,7 +204,6 @@ protected:
     ReaderType _reader_type = READER_QUERY;
     bool _next_delete_flag = false;
     bool _filter_delete = false;
-    bool _has_sequence_col = false;
     int32_t _sequence_col_idx = -1;
 
     std::unique_ptr<CollectIterator> _collect_iter;
